@@ -1,33 +1,37 @@
-require('dotenv').config()
-const { Pool } = require('pg')
+require('dotenv').config() // Para poder utilizar las variables de ambiente.
+const { Pool } = require('pg') // Conexión con postgres
 
 const args = process.argv.length
 
 if (args < 3) {
-	console.log('Please provide the password as an argument: node mongo.js <password>')
+	console.log('Please provide the password as an argument: node server-test.js <password>')
 	process.exit(1)
 }
 
 const password = process.argv[2]
-//const url =
-//	`mongodb+srv://fullstack:${password}@cluster0.zofv8.mongodb.net/phonebook?retryWrites=true&w=majority`
 
 const pool = new Pool() // No es necesario pasarle parametros de conexión, ya están en .env
 
 if (args >= 5) {
     const name = process.argv[3]
     const number = process.argv[4]
+    
+    /**
+     * Hay varias formas de hacer querys con pg, esta fue la unica que no me dió gallo.
+     * Se crea un objeto que va a contener el texto como tal de la consulta SQL y los valores
+     * que se van a utilizar en la consulta.
+     */
 
     const query = {
         text: 'INSERT INTO contacts(name, phone) VALUES($1, $2) RETURNING *',
-        values: [name, number]
+        values: [name, number] // los valores siempre se dan en forma de arreglo.
     }
 
     pool.query(query)
-        .then(res => console.log(res.rows))
-        .catch(err => console.log(err.stack))
+        .then(res => console.log(res.rows)) // Si el insert es exitoso imprime en la consola la tupla que se insertó.
+        .catch(err => console.log(err.stack)) // Si el insert no es exitoso se imprime el mensaje de error en la consola.
 
-    pool.end()
+    pool.end() // Cierra la conexión.
 
 } else {
     pool.query('SELECT * FROM contacts')

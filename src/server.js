@@ -12,6 +12,11 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+/**
+ * Todo lo que diga morgan, son cosas que definí para logearlas
+ * en consola. Cada que se le haga una petición a este servidor http,
+ * información relevante a esa petición va a aparecer en la consola.
+ */
 app.use(morgan(function (tokens, req, res) {
     return [
          tokens.method(req, res),
@@ -27,6 +32,10 @@ app.use(express.static('build'))
 
 pool = new Pool()
 
+/**
+ * Cuando este servidor reciba una petición GET a la url /api/persons,
+ * se hace un select a todas las tuplas de la tabla.
+ */
 app.get('/api/persons', (request, response) => { 
     pool
         .query('SELECT name, phone FROM contacts')
@@ -35,6 +44,7 @@ app.get('/api/persons', (request, response) => {
 })
 
 
+// Aquí le decimos que puerto usar.
 const PORT = process.env.SERVERPORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

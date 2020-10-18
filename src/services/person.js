@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios' // Hace lo mismo que postman. Envía peticiones a servidores http.
 const baseUrl = 'http://localhost:3001/api/persons'
 
 // API para comunicarse con el servidor corriendo en baseUrl con express.
@@ -23,4 +23,5 @@ const update = (id, newObject) => {
     return request.then(response => response.data)
 }
 
+// Hay que exportar las funciones para que se puedan usar en App.js
 export default {getAll, create, remove, update}
