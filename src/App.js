@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import apiService from './services/person'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [people, setPeople] = useState([])
+    
+
+    // Hook que se realiza apenas carga la paǵina.
+    useEffect(() => {
+        apiService
+            .getAll()
+            .then(initialNums => {
+                setPeople(initialNums)
+            })
+    }, [])
+    
+    console.log(people)
+    return (
+        <div>
+            <h2>Directorio telefónico</h2>
+            <div>
+                { 
+                    people.map(person => <p>{person.name} {person.phone}</p> )
+                }
+            </div>
+        </div>
+    )
 }
-
 export default App;
