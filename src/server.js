@@ -4,6 +4,8 @@ const morgan = require('morgan') // Logs
 const cors = require('cors') // Cross-Origin resource sharing
 const {Pool} = require('pg') // PostgreSQL 
 
+const connectionString = 'postgres://adeneebw:xu-1eg8AIETKSK9etjo6aydeAWCdHHtY@lallah.db.elephantsql.com:5432/adeneebw'
+
 morgan.token('post', function (tokens, req, res) {
     return JSON.stringify(req.body)
 })
@@ -30,7 +32,9 @@ app.use(morgan(function (tokens, req, res) {
 
 app.use(express.static('build'))
 
-pool = new Pool()
+pool = new Pool({
+    connectionString: connectionString,
+})
 
 /**
  * Cuando este servidor reciba una petición GET a la url /api/persons,
@@ -38,14 +42,54 @@ pool = new Pool()
  */
 app.get('/api/persons', (request, response) => { 
     pool
-        .query('SELECT name, phone FROM contacts')
+        .query('SELECT * FROM contacts')
         .then(result => response.json(result.rows))
+        .catch(err => console.log(err.stack))
+})
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+
+    const query = {
+        text: 'DELETE FROM contacts WHERE id = $1 RETURNING*',
+        values: [id]
+    }
+
+    pool.query(query)
+        .then(res.send('Contacto eliminado'))
+        .catch(err => console.log(err.stack))
+})
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    
+    const query = {
+        text: 'INSERT INTO contacts(name, phone) VALUES($1, $2) RETURNING *',
+        values: [body.name, body.number]
+    }
+
+    pool.query(query)
+        .then(result => res.json(result.rows))
+        .catch(err => console.log(err.stack))
+})
+
+app.put('/api/persons/:id', (req, res) => {
+    const id = Number(req.params.id)
+    const body = req.body
+    
+    const query = {
+        text: 'UPDATE contacts SET phone = $2 WHERE id = $1 RETURNING *',
+        values: [body.id, body.newPhone]
+    }
+
+    pool.query(query)
+        .then(result => res.json(result.rows))
         .catch(err => console.log(err.stack))
 })
 
 
 // Aquí le decimos que puerto usar.
-const PORT = process.env.SERVERPORT
+const PORT = process.env.SERVERPORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })

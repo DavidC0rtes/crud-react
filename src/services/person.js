@@ -20,7 +20,7 @@ const remove = (id) => {
 
 const update = (id, newObject) => {
     const request = axios.put(`${baseUrl}/${id}`, newObject)
-    return request.then(response => response.data)
+    return request.then(response => response.data[0])
 }
 
 // Hay que exportar las funciones para que se puedan usar en App.js

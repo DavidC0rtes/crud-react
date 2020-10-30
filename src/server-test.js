@@ -2,17 +2,16 @@ require('dotenv').config() // Para poder utilizar las variables de ambiente.
 const { Pool } = require('pg') // Conexión con postgres
 
 const args = process.argv.length
-
-if (args < 3) {
-	console.log('Please provide the password as an argument: node server-test.js <password>')
+console.log(args)
+if (args < 2) {
+	console.log('Please provide the  as an argument: node server-test.js <password>')
 	process.exit(1)
 }
 
-const password = process.argv[2]
-
 const pool = new Pool() // No es necesario pasarle parametros de conexión, ya están en .env
 
-if (args >= 5) {
+
+if (args >= 4) {
     const name = process.argv[3]
     const number = process.argv[4]
     
