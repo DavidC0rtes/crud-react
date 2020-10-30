@@ -4,8 +4,6 @@ const morgan = require('morgan') // Logs
 const cors = require('cors') // Cross-Origin resource sharing
 const {Pool} = require('pg') // PostgreSQL 
 
-const connectionString = 'postgres://adeneebw:xu-1eg8AIETKSK9etjo6aydeAWCdHHtY@lallah.db.elephantsql.com:5432/adeneebw'
-
 morgan.token('post', function (tokens, req, res) {
     return JSON.stringify(req.body)
 })
@@ -32,9 +30,7 @@ app.use(morgan(function (tokens, req, res) {
 
 app.use(express.static('build'))
 
-pool = new Pool({
-    connectionString: connectionString,
-})
+pool = new Pool()
 
 /**
  * Cuando este servidor reciba una petición GET a la url /api/persons,
