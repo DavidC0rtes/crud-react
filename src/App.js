@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PersonForm, Persons, Filter, Notification} from './components/misc'
 import apiService from './services/person'
-
+import './style.css'
 
 const App = () => {
     /**
@@ -117,7 +117,10 @@ const App = () => {
 
     return (
         <div>
-            <h2>Directorio telefónico</h2>
+             <h2>Directorio telefónico
+             <img alt="logo" src='http://simpleicon.com/wp-content/uploads/phone-book.png' width="20" height="20"/>
+            </h2>
+            <hr/>
             <Notification message={message} />
             <Filter newFilter={newFilter} handleNewFilter={handleNewFilter} />
             <h2>Añadir nuevo contacto</h2>

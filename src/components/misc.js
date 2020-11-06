@@ -12,9 +12,9 @@ const Details = ({ person, removePerson }) => {
 const PersonForm = (props) => {
     return (
         <form onSubmit={props.addName}>
-            <> name: <input value={props.newName} onChange={props.handleNewName} /> </>
-            <> number: <input value={props.newNumber} onChange={props.handleNewNumber} /></>
-            <> <button type='submit'>añadir</button> </>
+            <> nombre: <input value={props.newName} onChange={props.handleNewName} /> </>
+            <> número: <input value={props.newNumber} onChange={props.handleNewNumber} /></>
+            <> <button id='añadir' type='submit'>añadir</button> </>
         </form>
     )
 }
@@ -33,7 +33,7 @@ const Persons = ({ numbersToShow, removeNumber }) => {
 const Filter = ({ newFilter, handleNewFilter }) => {
     return (
         <div>
-            Filtrando con: <input value={newFilter} onChange={handleNewFilter} />
+            Busqueda: <input value={newFilter} onChange={handleNewFilter} />
         </div>
     )
 }
